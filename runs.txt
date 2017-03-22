@@ -1,2 +1,4 @@
 Initial run 691616 w/args 1000 1000 3 5 7
 2nd run 299675 added openmp commands
+3rd run 285000 changed schedule and requested max threads
+4th run 242000 changed to switch statement
