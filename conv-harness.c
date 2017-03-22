@@ -241,9 +241,35 @@ void team_conv(float *** image, float **** kernels, float *** output,
         double sum = 0.0;
         for ( c = 0; c < nchannels; c++ ) {
           for ( x = 0; x < kernel_order; x++) {
-            for ( y = 0; y < kernel_order; y++ ) {
-              sum += image[w+x][h+y][c] * kernels[m][c][x][y];
-            }
+          	switch(kernel_order){
+          		case 1:
+          			sum += image[w+x][h+0][c] * kernels[m][c][x][0];
+          			break;
+          		case 3:
+	          		sum += image[w+x][h+0][c] * kernels[m][c][x][0];
+	          		sum += image[w+x][h+1][c] * kernels[m][c][x][1];
+	          		sum += image[w+x][h+2][c] * kernels[m][c][x][2];
+          			break;
+          		case 5:
+	          		sum += image[w+x][h+0][c] * kernels[m][c][x][0];
+	          		sum += image[w+x][h+1][c] * kernels[m][c][x][1];
+	          		sum += image[w+x][h+2][c] * kernels[m][c][x][2];
+	          		sum += image[w+x][h+3][c] * kernels[m][c][x][3];
+	          		sum += image[w+x][h+4][c] * kernels[m][c][x][4];
+	          		break;
+          		case 7:
+          			sum += image[w+x][h+0][c] * kernels[m][c][x][0];
+	          		sum += image[w+x][h+1][c] * kernels[m][c][x][1];
+	          		sum += image[w+x][h+2][c] * kernels[m][c][x][2];
+	          		sum += image[w+x][h+3][c] * kernels[m][c][x][3];
+	          		sum += image[w+x][h+4][c] * kernels[m][c][x][4];
+	          		sum += image[w+x][h+5][c] * kernels[m][c][x][5];
+	          		sum += image[w+x][h+6][c] * kernels[m][c][x][6];
+	          		break;
+	          	default:
+	          	fprintf(stderr, "FATAL: kernel_order must be 1, 3, 5 or 7, not %d\n",
+            		kernel_order);
+    			exit(1);
           }
           output[m][w][h] = sum;
         }
