@@ -227,12 +227,15 @@ void team_conv(float *** image, float **** kernels, float *** output,
                int width, int height, int nchannels, int nkernels,
                int kernel_order)
 {
-  
-  #pragma omp parallel
+ //multichannel_conv(image, kernels, output, width, height, nchannels, nkernels, kernel_order); 
+  omp_get_max_threads();
+  int t;
+  t=omp_get_num_threads();
+  #pragma omp parallel if(nkernels>t)
   {
-    int h, w, x, y, c, m;
-    #pragma omp for collapse(3)
-    for ( m = 0; m < nkernels; m++ ) {
+  int h, w, x, y, c, m;
+  #pragma omp for schedule(auto) collapse(3)
+  for ( m = 0; m < nkernels; m++ ) {
     for ( w = 0; w < width; w++ ) {
       for ( h = 0; h < height; h++ ) {
         double sum = 0.0;
@@ -247,7 +250,42 @@ void team_conv(float *** image, float **** kernels, float *** output,
       }
     }
   }
+}
+  /*#pragma omp parallel
+  {
+
+    int h, w, x, y, c, m;
+    //try schedule(static,chunk) clause
+    #pragma omp for collapse(3)
+    for ( m = 0; m < nkernels; m++ ) {
+    for ( w = 0; w < width; w++ ) {
+      for ( h = 0; h < height; h++ ) {
+        double sum = 0.0;
+            switch(kernel_order){
+              case 1:
+              for(c=0;c<nchannels;c++){
+                sum = _mm_add_ps(sum,_mm_mul_ps(mm_set_ss(image[w][h][c]),mm_set_ss(kernels[m][c][0][0])));
+              }
+              output[m][w][h] = _mm_cvtss_f32((_mm_hadd_ps(_mm_hadd_ps(sum,sum),sum)));
+              sum= _mm_setzero_ps();
+              break;
+              case 3:
+              for(c=0;c<nchannels;c++){
+                sum=_mm_add_ps(sum,_mm_mul_ps(mm_set_ss(image[w][h][c]),mm_set_ss(kernels[m][c][0][0])));
+
+              }
+
+
+            }
+              sum += image[w+x][h+y][c] * kernels[m][c][x][y];
+            }
+          }
+          output[m][w][h] = sum;
+        }
+      }
+    }
   }
+  }*/
   
  
 }

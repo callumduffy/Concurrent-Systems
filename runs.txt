@@ -1,1 +1,2 @@
 Initial run 691616 w/args 1000 1000 3 5 7
+2nd run 299675 added openmp commands
