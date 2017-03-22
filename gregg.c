@@ -203,8 +203,10 @@ void multichannel_conv(float *** image, float **** kernels, float *** output,
                        int width, int height, int nchannels, int nkernels,
                        int kernel_order)
 {
+#pragma omp parallel
+  {
   int h, w, x, y, c, m;
-
+#pragma omp for collapse(3) 
   for ( m = 0; m < nkernels; m++ ) {
     for ( w = 0; w < width; w++ ) {
       for ( h = 0; h < height; h++ ) {
@@ -220,6 +222,7 @@ void multichannel_conv(float *** image, float **** kernels, float *** output,
       }
     }
   }
+}
 }
 
 /* the fast version of matmul written by the team */

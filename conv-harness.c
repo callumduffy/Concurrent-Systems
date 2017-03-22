@@ -228,10 +228,10 @@ void team_conv(float *** image, float **** kernels, float *** output,
                int kernel_order)
 {
  //multichannel_conv(image, kernels, output, width, height, nchannels, nkernels, kernel_order); 
-  #pragma omp parallel
+  #pragma omp parallel collapse(3)
   {
   int h, w, x, y, c, m;
-  #pragma omp for collapse(3)
+  #pragma omp for 
   for ( m = 0; m < nkernels; m++ ) {
     for ( w = 0; w < width; w++ ) {
       for ( h = 0; h < height; h++ ) {
