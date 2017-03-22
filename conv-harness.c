@@ -270,6 +270,8 @@ void team_conv(float *** image, float **** kernels, float *** output,
 	          	fprintf(stderr, "FATAL: kernel_order must be 1, 3, 5 or 7, not %d\n",
             		kernel_order);
     			exit(1);
+
+          	}
           }
           output[m][w][h] = sum;
         }
