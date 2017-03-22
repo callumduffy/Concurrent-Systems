@@ -228,10 +228,7 @@ void team_conv(float *** image, float **** kernels, float *** output,
                int kernel_order)
 {
  //multichannel_conv(image, kernels, output, width, height, nchannels, nkernels, kernel_order); 
-  omp_get_max_threads();
-  int t;
-  t=omp_get_num_threads();
-  #pragma omp parallel if(nkernels>t)
+  #pragma omp parallel
   {
   int h, w, x, y, c, m;
   #pragma omp for schedule(auto) collapse(3)
