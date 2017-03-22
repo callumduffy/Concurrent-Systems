@@ -1,0 +1,15 @@
+128 128 5 32 100
+Our code time: 264,457
+Gregg's code time: 2,773,516
+
+32 32 3 64 1024
+Our code time: 297,101
+Gregg's code time:2,424,303
+
+255 255 1 63 127
+Our code time: 368304
+Gregg's code time: 4,742,818
+
+192 192 7 1 512
+Our code time: 374,616
+Gregg's code time: 2,969,530
